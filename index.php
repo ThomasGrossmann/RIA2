@@ -3,7 +3,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
-class FaceDetection
+class ImageAnalyzer
 {
     private $client;
     private $detectionCondifence;
@@ -17,7 +17,7 @@ class FaceDetection
         );
     }
 
-    public function Analyze($path)
+    public function detectFace($path)
     {
         $imageData = file_get_contents($path);
         $response = $this->client->faceDetection($imageData);
@@ -30,5 +30,5 @@ class FaceDetection
     }
 }
 
-$faceDetection = new FaceDetection();
-$faceDetection->Analyze('images/sample.jpeg');
+$faceDetection = new ImageAnalyzer();
+$faceDetection->detectFace('images/sample.jpeg');
