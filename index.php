@@ -3,13 +3,32 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
-$env = parse_ini_file('.env');
-$client = new ImageAnnotatorClient(
-    ['credentials' => $env['CREDENTIALS_PATH']]
-);
+class FaceDetection
+{
+    private $client;
+    private $detectionCondifence;
+    private $landmarkingConfidence;
 
-$path = 'images/sample.jpeg';
-$imageData = file_get_contents($path);
-$response = $client->faceDetection($imageData);
+    public function __construct()
+    {
+        $env = parse_ini_file('.env');
+        $this->client = new ImageAnnotatorClient(
+            ['credentials' => $env['CREDENTIALS_PATH']]
+        );
+    }
 
-echo (json_encode($response->serializeToJsonString()));
+    public function Analyze($path)
+    {
+        $imageData = file_get_contents($path);
+        $response = $this->client->faceDetection($imageData);
+        $faces = $response->getFaceAnnotations();
+
+        foreach ($faces as $face) {
+            $this->detectionCondifence = $face->getDetectionConfidence();
+            $this->landmarkingConfidence = $face->getLandmarkingConfidence();
+        }
+    }
+}
+
+$faceDetection = new FaceDetection();
+$faceDetection->Analyze('images/sample.jpeg');
