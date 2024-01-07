@@ -20,6 +20,6 @@ This project also introduces the concept of BI (Business Intelligence) by conver
 ## Collaborate
 
 ## License
-[LICENCE](LICENCE.txt)
+[LICENSE](LICENSE.txt)
 
 ## Contact
