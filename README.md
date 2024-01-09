@@ -72,3 +72,4 @@ Composer dependencies used to realize and test the project.
 ## Contact
 - Teams
 - Email
+- Create an issue in the repo
