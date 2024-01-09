@@ -1,8 +1,9 @@
 <?php
-require __DIR__ . '/ILabelDetector.php';
-require __DIR__ . '/../vendor/autoload.php';
+
+namespace App;
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
+
 
 class LabelDetectorImpl implements ILabelDetector
 {

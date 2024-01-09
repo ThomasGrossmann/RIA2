@@ -1,8 +1,9 @@
 <?php
 
-require __DIR__ . '/IDataObject.php';
+namespace App;
 
 use Google\Cloud\Storage\StorageClient;
+use Exception;
 
 class GoogleDataObjectImpl implements IDataObject
 {

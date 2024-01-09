@@ -1,8 +1,10 @@
 <?php
 
-require __DIR__ . '/../src/LabelDetectorImpl.php';
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+use App\LabelDetectorImpl;
+use Exception;
 
 class LabelDetectorTest extends TestCase
 {

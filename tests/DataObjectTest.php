@@ -1,8 +1,10 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../src/GoogleDataObjectImpl.php';
+
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+use App\GoogleDataObjectImpl;
+use Exception;
 
 class DataObjectTest extends TestCase
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 interface IDataObject
 {
     public function doesExist($remoteFullPath): bool;
