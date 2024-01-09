@@ -14,6 +14,7 @@ class LabelDetectorTest extends TestCase
     {
         $this->labelDetector = new LabelDetectorImpl();
         $this->localFile = 'images/sample.jpeg';
+        $this->remoteFileUrl = 'https://www.admin.ch/gov/de/start/departemente/departement-fuer-auswaertige-angelegenheiten-eda/_jcr_content/par/image/image.imagespooler.jpg/1611330706364/Cassis.jpg';
     }
 
     public function testAnalyzeLocalFileWithDefaultValuesImageAnalyzed()
@@ -32,7 +33,7 @@ class LabelDetectorTest extends TestCase
     {
         $response = $this->labelDetector->analyze($this->remoteFileUrl);
 
-        $this->assertTrue(count($response->amountOfLabels) <= 10);
+        $this->assertTrue($response->amountOfLabels <= 10);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= 90);
         }
@@ -44,7 +45,7 @@ class LabelDetectorTest extends TestCase
 
         $response = $this->labelDetector->analyze($this->remoteFileUrl, $maxLabels);
 
-        $this->assertTrue(count($response->amountOfLabels) <= $maxLabels);
+        $this->assertTrue($response->amountOfLabels <= $maxLabels);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= 50);
         }
@@ -56,7 +57,7 @@ class LabelDetectorTest extends TestCase
 
         $response = $this->labelDetector->analyze($this->remoteFileUrl, $minConfidenceLevel);
 
-        $this->assertTrue(count($response->amountOfLabels) <= 10);
+        $this->assertTrue($response->amountOfLabels <= 10);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= $minConfidenceLevel);
         }
@@ -68,9 +69,8 @@ class LabelDetectorTest extends TestCase
         $minConfidenceLevel = 60;
 
         $response = $this->labelDetector->analyze($this->remoteFileUrl, $maxLabels, $minConfidenceLevel);
-        // TODO: the type of response contains the payload (returned in json by the api)
 
-        $this->assertTrue(count($response->amountOfLabels) <= $maxLabels);
+        $this->assertTrue($response->amountOfLabels <= $maxLabels);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= $minConfidenceLevel);
         }
