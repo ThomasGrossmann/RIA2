@@ -51,7 +51,6 @@ class GoogleDataObjectImpl implements IDataObject
                 new \DateTime('+' . $expirationTime . ' minutes'),
                 ['version' => 'v4']
             );
-            echo $url;
             return $url;
         }
     }

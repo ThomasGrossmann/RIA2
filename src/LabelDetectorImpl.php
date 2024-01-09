@@ -4,7 +4,6 @@ namespace App;
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
-
 class LabelDetectorImpl implements ILabelDetector
 {
     private $client;
