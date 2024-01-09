@@ -24,7 +24,13 @@ class GoogleDataObjectImpl implements IDataObject
         if ($occurrences <= 2) {
             return $this->bucket->exists();
         } else {
-            return $this->bucket->object($remoteFullPath)->exists();
+            $objects = $this->bucket->objects(['prefix' => $remoteFullPath]);
+            foreach ($objects as $object) {
+                if ($object->name() == $remoteFullPath || strpos($object->name(), $remoteFullPath) !== false) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

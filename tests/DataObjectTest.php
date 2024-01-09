@@ -132,16 +132,19 @@ class DataObjectTest extends TestCase
         $this->assertFalse($this->dataObject->doesExist($objectUri));
     }
 
-    // public function testRemoveObjectAndFolderPresentObjectRemoved()
-    // {
-    //     $objectUri = $this->bucketUri . '/images';
-    //     $objectUriWithSubFolder = $this->bucketUri . '/images/objectToRemove.jpeg';
+    public function testRemoveObjectAndFolderPresentObjectRemoved()
+    {
+        $this->clearBucket();
+        $objectUri = $this->bucketUri . '/images';
+        $objectUriWithSubFolder = $this->bucketUri . '/images/objectToRemove.jpeg';
+        $localFile = 'images/objectToRemove.jpeg';
 
-    //     $this->assertTrue($this->dataObject->doesExist($objectUri));
-    //     $this->assertTrue($this->dataObject->doesExist($objectUriWithSubFolder));
+        $this->dataObject->upload($localFile, $objectUriWithSubFolder);
+        $this->assertTrue($this->dataObject->doesExist($objectUri));
+        $this->assertTrue($this->dataObject->doesExist($objectUriWithSubFolder));
 
-    //     $this->dataObject->remove($objectUri, true);
+        $this->dataObject->remove($objectUri, true);
 
-    //     $this->assertFalse($this->dataObject->doesExist($objectUri));
-    // }
+        $this->assertFalse($this->dataObject->doesExist($objectUri));
+    }
 }
