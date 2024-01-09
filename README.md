@@ -16,7 +16,7 @@ Tools with versions that were used to realize this project.
 - **Package Manager** : Composer 2.4.4
 
 ### Configuration
-Some data must remain private such as API crendentials JSON file or bucket URI.
+Some data must remain private such as the API crendentials JSON file or bucket URI.
 
 In order to do so, copy and rename the `.env.example` file.
 - `cp .env.example .env`
