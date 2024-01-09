@@ -2,5 +2,5 @@
 
 interface ILabelDetector
 {
-    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 0.9);
+    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 90): array;
 }
