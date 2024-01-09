@@ -1,12 +1,13 @@
 <?php
 require __DIR__ . '/ILabelDetector.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
 class LabelDetectorImpl implements ILabelDetector
 {
     private $client;
-    private $metrics;
+    private $metrics = [];
     private $amountOfLabels;
 
     public function __construct()
@@ -17,22 +18,28 @@ class LabelDetectorImpl implements ILabelDetector
         ]);
     }
 
-    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 0.9): array
+    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 90): array
     {
         $image = file_get_contents($remoteFullPath);
         $response = $this->client->labelDetection($image);
         $labels = $response->getLabelAnnotations();
 
         foreach ($labels as $label) {
-            $this->metrics = [
-                "description" => $label->getDescription(),
-                "confidenceLevel" => $label->getScore()
-            ];
+            if (count($this->metrics) >= $maxLabels) {
+                break;
+            }
+            if ($label->getScore() * 100 >= $minConfidenceLevel) {
+                $this->metrics[] = [
+                    "description" => $label->getDescription(),
+                    "confidenceLevel" => $label->getScore() * 100
+                ];
+            }
         }
+        $this->amountOfLabels = count($this->metrics);
 
         return [
-            "amountOfLabels" => $this->amountOfLabels,
-            "metrics" => $this->metrics
+            "metrics" => $this->metrics,
+            "amountOfLabels" => $this->amountOfLabels
         ];
     }
 }
