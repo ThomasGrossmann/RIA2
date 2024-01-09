@@ -4,7 +4,6 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use App\LabelDetectorImpl;
-use Exception;
 
 class LabelDetectorTest extends TestCase
 {
@@ -16,7 +15,8 @@ class LabelDetectorTest extends TestCase
     {
         $this->labelDetector = new LabelDetectorImpl();
         $this->localFile = 'images/sample.jpeg';
-        $this->remoteFileUrl = 'https://www.admin.ch/gov/de/start/departemente/departement-fuer-auswaertige-angelegenheiten-eda/_jcr_content/par/image/image.imagespooler.jpg/1611330706364/Cassis.jpg';
+        $this->remoteFileUrl = 'https://www.admin.ch/gov/de/start/departemente/departement-fuer-auswaertige
+        -angelegenheiten-eda/_jcr_content/par/image/image.imagespooler.jpg/1611330706364/Cassis.jpg';
     }
 
     public function testAnalyzeLocalFileWithDefaultValuesImageAnalyzed()
