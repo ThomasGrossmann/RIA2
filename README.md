@@ -16,7 +16,9 @@ Tools with versions that were used to realize this project.
 - **Package Manager** : Composer 2.4.4
 
 ### Configuration
-Some data must remain private such as API crendentials JSON file or bucket URI. In order to do so, copy and rename the `.env.example` file.
+Some data must remain private such as API crendentials JSON file or bucket URI.
+
+In order to do so, copy and rename the `.env.example` file.
 - `cp .env.example .env`
 - Open the file and fill the variables with your data
 
@@ -25,9 +27,9 @@ Some data must remain private such as API crendentials JSON file or bucket URI. 
 ### Dependencies
 Composer dependencies used to realize and test the project.
 - **Dev**
-  - google/apiclient ^2.15
-  - google/cloud-vision ^1.7
-  - google/cloud-storage ^1.36
+  - google/apiclient : ^2.15
+  - google/cloud-vision : ^1.7
+  - google/cloud-storage : ^1.36
 - **Tests**
   - phpunit/phpunit ^10.5
 
@@ -52,8 +54,7 @@ Composer dependencies used to realize and test the project.
 ├── composer.lock
 ├── images
 │   ├── objectToRemove.jpeg
-│   ├── sample.jpeg
-│   └── testPublish.jpeg
+│   └── sample.jpeg
 ├── index.php
 ├── src
 │   ├── GoogleDataObjectImpl.php
@@ -69,3 +70,5 @@ Composer dependencies used to realize and test the project.
 [LICENSE](LICENSE)
 
 ## Contact
+- Teams
+- Email
