@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-callApi();
+apiCall();
 
-function callApi()
+function apiCall()
 {
     $env = parse_ini_file('.env');
     $bucketName = $env['BUCKET_NAME'];
@@ -24,12 +24,12 @@ function callApi()
     }
 
     $signedUrl = $dataObject->publish($objectUri);
-    $response = $labelDetector->analyze($signedUrl);
+    $response = json_decode(json_encode($labelDetector->analyze($signedUrl)));
 
     $sql = "INSERT INTO `labels` (`description`, `confidenceLevel`) VALUES ";
     $values = [];
-    foreach ($response['metrics'] as $metric) {
-        $values[] = "('" . $metric['description'] . "', " . $metric['confidenceLevel'] . ")";
+    foreach ($response->metrics as $metric) {
+        $values[] = "('" . $metric->description . "', " . $metric->confidenceLevel . ")";
     }
     $sql .= implode(',', $values) . ';';
     file_put_contents($sqlFile, $sql);
