@@ -2,51 +2,29 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-apiCall();
+$env = parse_ini_file('.env');
+$bucketUri = $env['BUCKET_URI'];
+$bucketName = $env['BUCKET_NAME'];
 
-function apiCall()
-{
-    $env = parse_ini_file('.env');
-    $bucketName = $env['BUCKET_NAME'];
-    $bucketUri = $env['BUCKET_URI'];
-    $labelDetector = new App\LabelDetectorImpl();
-    $dataObject = new App\GoogleDataObjectImpl($bucketName);
+$dataObject = new App\GoogleDataObjectImpl($bucketName);
+$labelDetector = new App\LabelDetectorImpl();
 
-    $objectUri = $bucketUri . '/sample.jpeg';
-    $localFile = 'images/sample.jpeg';
-    $sqlObjectUri = $bucketUri . '/labels.sql';
-    $sqlFile = 'labels.sql';
+$objectUri = $bucketUri . '/sample.jpeg';
+$localFile = 'images/sample.jpeg';
+$sqlFile = 'labels_' . date('Ymd_His') . '.sql';
+$sqlObjectUri = $bucketUri . '/' . $sqlFile;
 
-    clearBucket($dataObject);
+$dataObject->apiCall($objectUri, $localFile);
 
-    if (!$dataObject->doesExist($objectUri)) {
-        $dataObject->upload($localFile, $objectUri);
-    }
+$signedUrl = $dataObject->publish($objectUri);
+$response = json_decode(json_encode($labelDetector->analyze($signedUrl)));
 
-    $signedUrl = $dataObject->publish($objectUri);
-    $response = json_decode(json_encode($labelDetector->analyze($signedUrl)));
-
-    $sql = "INSERT INTO `labels` (`description`, `confidenceLevel`) VALUES ";
-    $values = [];
-    foreach ($response->metrics as $metric) {
-        $values[] = "('" . $metric->description . "', " . $metric->confidenceLevel . ")";
-    }
-    $sql .= implode(',', $values) . ';';
-    file_put_contents($sqlFile, $sql);
-
-    $dataObject->upload($sqlFile, $sqlObjectUri);
-
-    if ($dataObject->doesExist($sqlObjectUri)) {
-        echo 'Success!';
-    } else {
-        echo 'Failure!';
-    }
+$sql = "INSERT INTO `labels` (`description`, `confidence_level`) VALUES ";
+$values = [];
+foreach ($response->metrics as $metric) {
+    $values[] = "('" . $metric->description . "', " . $metric->confidenceLevel . ")";
 }
+$sql .= implode(',', $values) . ';';
+file_put_contents($sqlFile, $sql);
 
-function clearBucket($dataObject)
-{
-    $objectsToClear = $dataObject->bucket->objects();
-    foreach ($objectsToClear as $object) {
-        $object->delete();
-    }
-}
+$dataObject->upload($sqlFile, $sqlObjectUri);

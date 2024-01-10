@@ -18,6 +18,13 @@ class GoogleDataObjectImpl implements IDataObject
         $this->bucket = $storage->bucket($bucketName);
     }
 
+    public function apiCall($objectUri, $localFile)
+    {
+        if (!$this->doesExist($objectUri)) {
+            $this->upload($localFile, $objectUri);
+        }
+    }
+
     public function doesExist($remoteFullPath): bool
     {
         $occurrences = substr_count($remoteFullPath, '/');
