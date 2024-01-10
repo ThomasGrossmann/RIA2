@@ -39,7 +39,7 @@ class DataObjectTest extends TestCase
         $objectUri = $this->bucketUri . '/sample.jpeg';
         $localFile = 'images/sample.jpeg';
 
-        $this->dataObject->upload($objectUri, $localFile);
+        $this->dataObject->upload($localFile, $objectUri);
 
         $this->assertTrue($this->dataObject->doesExist($localFile));
     }
