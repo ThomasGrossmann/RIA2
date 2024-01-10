@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04f855f8b846ea267d4515fab3509210",
+    "content-hash": "bd7d2a72e48fc744b86043cc00e49631",
     "packages": [
         {
             "name": "brick/math",
@@ -195,16 +195,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.324.0",
+            "version": "v0.331.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "585cc823c3d59788e4a0829d5b7e41c76950d801"
+                "reference": "94d0bcc1827f6ea24274fe17ece0930ae2a8f51d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/585cc823c3d59788e4a0829d5b7e41c76950d801",
-                "reference": "585cc823c3d59788e4a0829d5b7e41c76950d801",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/94d0bcc1827f6ea24274fe17ece0930ae2a8f51d",
+                "reference": "94d0bcc1827f6ea24274fe17ece0930ae2a8f51d",
                 "shasum": ""
             },
             "require": {
@@ -233,9 +233,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.324.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.331.0"
             },
-            "time": "2023-11-13T01:06:14+00:00"
+            "time": "2024-01-05T01:04:19+00:00"
         },
         {
             "name": "google/auth",
@@ -1302,16 +1302,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.33",
+            "version": "3.0.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "33fa69b2514a61138dd48e7a49f99445711e0ad0"
+                "reference": "4b1827beabce71953ca479485c0ae9c51287f2fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/33fa69b2514a61138dd48e7a49f99445711e0ad0",
-                "reference": "33fa69b2514a61138dd48e7a49f99445711e0ad0",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/4b1827beabce71953ca479485c0ae9c51287f2fe",
+                "reference": "4b1827beabce71953ca479485c0ae9c51287f2fe",
                 "shasum": ""
             },
             "require": {
@@ -1392,7 +1392,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.33"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.35"
             },
             "funding": [
                 {
@@ -1408,7 +1408,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-21T14:00:39+00:00"
+            "time": "2023-12-29T01:59:53+00:00"
         },
         {
             "name": "psr/cache",
