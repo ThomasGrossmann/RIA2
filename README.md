@@ -27,7 +27,9 @@ In order to do so, copy and rename the `.env.example` file.
 
 #### Database Model
 In order to verify/test the conversion of the analyzed data to a SQL script :
-- Open and run `create_model.sql` in your prefered SQL client
+- Open and run `create_model.sql` in your prefered SQL client to create the Database
+- Run the sequence `php index.php` to analyze and generate
+- Run the generated SQL file in your prefered SQL client
 
 ## Deployment
 
