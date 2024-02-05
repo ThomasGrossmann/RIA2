@@ -10,17 +10,26 @@ This project also introduces the concept of BI (Business Intelligence) by conver
 ## Getting started
 
 ### Prerequisites
-Tools with versions that were used to realize this project.
+Tools with versions that were used to realize this project. Versions may be subject to change as the project was realized exclusively on MacOS system.
 - **IDE** : Visual Studio Code 1.85.1
-- **Langage** : PHP 8.3.0
+- **Langages** :
+  - PHP 8.3.0
+  - MySQL (from 11.1.3-MariaDB)
 - **Package Manager** : Composer 2.4.4
 
 ### Configuration
+#### Env
 Some data must remain private such as the API crendentials JSON file or bucket URI.
 
 In order to do so, copy and rename the `.env.example` file.
 - `cp .env.example .env`
 - Open the file and fill the variables with your data
+
+#### Database Model
+In order to verify/test the conversion of the analyzed data to a SQL script :
+- Open and run `create_model.sql` in your prefered SQL client to create the Database
+- Run the sequence `php index.php` to analyze and generate
+- Run the generated SQL file in your prefered SQL client
 
 ## Deployment
 
@@ -31,7 +40,7 @@ Composer dependencies used to realize and test the project.
   - google/cloud-vision : ^1.7
   - google/cloud-storage : ^1.36
 - **Tests**
-  - phpunit/phpunit ^10.5
+  - phpunit/phpunit : ^10.5
 
 ### To install the project
 - Clone the repo locally
@@ -52,6 +61,7 @@ Composer dependencies used to realize and test the project.
 ├── README.md
 ├── composer.json
 ├── composer.lock
+├── create_model.sql
 ├── images
 │   ├── objectToRemove.jpeg
 │   └── sample.jpeg
