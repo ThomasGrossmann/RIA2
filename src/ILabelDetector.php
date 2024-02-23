@@ -4,5 +4,5 @@ namespace App;
 
 interface ILabelDetector
 {
-    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 90): array;
+    public function analyze(string $remoteFullPath, int $maxLabels = 10, int $minConfidenceLevel = 90): array;
 }
