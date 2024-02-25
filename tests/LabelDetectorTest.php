@@ -26,7 +26,7 @@ class LabelDetectorTest extends TestCase
         $this->labelDetector = self::$labelDetectorInstance;
 
         $this->localFile = 'images/sample.jpeg';
-        $this->remoteFileUrl = 'https://www.admin.ch/gov/de/start/departemente/departement-fuer-auswaertige-angelegenheiten-eda/_jcr_content/par/image/image.imagespooler.jpg/1611330706364/Cassis.jpg';
+        $this->remoteFileUrl = 'https://www.elysee.fr/cdn-cgi/image/width=1520%2Cheight=2534/images/default/0001/13/22e85bb25185f2f19748178a2f46713c11a32913.jpg';
         $this->maxLabels = 5;
         $this->minConfidenceLevel = 60;
     }
