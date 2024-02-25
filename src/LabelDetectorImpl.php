@@ -10,15 +10,14 @@ class LabelDetectorImpl implements ILabelDetector
     private $metrics = [];
     private $amountOfLabels;
 
-    public function __construct()
+    public function __construct(string $credentialsPath)
     {
-        $env = parse_ini_file('.env');
         $this->client = new ImageAnnotatorClient([
-            'credentials' => $env['CREDENTIALS_PATH']
+            'credentials' => $credentialsPath
         ]);
     }
 
-    public function analyze($remoteFullPath, $maxLabels = 10, $minConfidenceLevel = 90): array
+    public function analyze(string $remoteFullPath, int $maxLabels = 10, int $minConfidenceLevel = 90): array
     {
         $image = file_get_contents($remoteFullPath);
         $response = $this->client->labelDetection($image);
