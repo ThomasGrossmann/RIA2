@@ -18,8 +18,8 @@ class DataObjectTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $env = parse_ini_file('.env');
-        $credentialsPath = $env['DATAOBJECT_CREDENTIALS_PATH'];
+        $env = parse_ini_file('.env.dataObject');
+        $credentialsPath = $env['CREDENTIALS_PATH'];
         self::$bucketUri = $env['BUCKET_URI'];
         self::$bucketName = $env['BUCKET_NAME'];
         self::$dataObjectInstance = new GoogleDataObjectImpl(self::$bucketName, $credentialsPath);

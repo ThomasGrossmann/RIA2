@@ -16,8 +16,8 @@ class LabelDetectorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $env = parse_ini_file('.env');
-        $credentialsPath = $env['LABELDETECTOR_CREDENTIALS_PATH'];
+        $env = parse_ini_file('.env.labelDetector');
+        $credentialsPath = $env['CREDENTIALS_PATH'];
         self::$labelDetectorInstance = new LabelDetectorImpl($credentialsPath);
     }
 
