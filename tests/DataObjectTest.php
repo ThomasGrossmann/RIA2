@@ -8,13 +8,13 @@ use App\Exceptions\ObjectNotFoundException;
 
 class DataObjectTest extends TestCase
 {
-    private static $dataObjectInstance;
-    private static $bucketName;
-    private static $bucketUri;
-    private $dataObject;
-    private $objectUri;
-    private $localFile;
-    private $downloadDestination;
+    private static GoogleDataObjectImpl $dataObjectInstance;
+    private static string $bucketName;
+    private static string $bucketUri;
+    private GoogleDataObjectImpl $dataObject;
+    private string $objectUri;
+    private string $localFile;
+    private string $downloadDestination;
 
     public static function setUpBeforeClass(): void
     {
@@ -44,6 +44,10 @@ class DataObjectTest extends TestCase
 
         if (file_exists($this->downloadDestination)) {
             unlink($this->downloadDestination);
+        }
+
+        if (file_exists('images/testPublish.jpeg')) {
+            unlink('images/testPublish.jpeg');
         }
     }
 
@@ -98,6 +102,8 @@ class DataObjectTest extends TestCase
     public function testDownloadObjectAndLocalPathAvailableObjectDownloaded()
     {
         // given
+        // have to upload an image first (the bucket is cleaned before each test)
+        $this->dataObject->upload($this->localFile, $this->objectUri);
         $this->assertTrue($this->dataObject->doesExist($this->objectUri));
         $this->assertFalse(file_exists($this->downloadDestination));
 
@@ -127,6 +133,8 @@ class DataObjectTest extends TestCase
     public function testPublishObjectExistsPublicUrlCreated()
     {
         // given
+        // have to upload an image first (the bucket is cleaned before each test)
+        $this->dataObject->upload($this->localFile, $this->objectUri);
         $this->localFile = 'images/testPublish.jpeg';
         $destinationFolder = 'images/';
 
