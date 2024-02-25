@@ -62,6 +62,9 @@ Composer dependencies used to realize and test the project.
 ├── composer.json
 ├── composer.lock
 ├── create_model.sql
+├── docs
+│   ├── RIA2.drawio
+│   └── RIA2.png
 ├── images
 │   ├── objectToRemove.jpeg
 │   └── sample.jpeg
@@ -70,7 +73,10 @@ Composer dependencies used to realize and test the project.
 │   ├── GoogleDataObjectImpl.php
 │   ├── IDataObject.php
 │   ├── ILabelDetector.php
-│   └── LabelDetectorImpl.php
+│   ├── LabelDetectorImpl.php
+│   └── exceptions
+│       ├── ObjectAlreadyExistsException.php
+│       └── ObjectNotFoundException.php
 └── tests
     ├── DataObjectTest.php
     └── LabelDetectorTest.php
