@@ -4,147 +4,192 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use App\GoogleDataObjectImpl;
-use Exception;
+use App\Exceptions\ObjectNotFoundException;
 
 class DataObjectTest extends TestCase
 {
-    private $bucketUri;
-    private $bucketName;
+    private static $dataObjectInstance;
+    private static $bucketName;
+    private static $bucketUri;
     private $dataObject;
+    private $objectUri;
+    private $localFile;
+    private $downloadDestination;
+
+    public static function setUpBeforeClass(): void
+    {
+        $env = parse_ini_file('.env');
+        $credentialsPath = $env['DATAOBJECT_CREDENTIALS_PATH'];
+        self::$bucketUri = $env['BUCKET_URI'];
+        self::$bucketName = $env['BUCKET_NAME'];
+        self::$dataObjectInstance = new GoogleDataObjectImpl(self::$bucketName, $credentialsPath);
+    }
 
     protected function setUp(): void
     {
-        $env = parse_ini_file('.env');
-        $this->bucketName = $env['BUCKET_NAME'];
-        $this->bucketUri = $env['BUCKET_URI'];
-        $this->dataObject = new GoogleDataObjectImpl($this->bucketName);
+        $this->bucketUri = self::$bucketUri;
+        $this->dataObject = self::$dataObjectInstance;
+
+        $this->objectUri = $this->bucketUri . '/sample.jpeg';
+        $this->localFile = 'images/sample.jpeg';
+        $this->downloadDestination = 'images/testDownload.jpeg';
     }
 
-    private function clearBucket()
+    protected function tearDown(): void
     {
         $objectsToClear = $this->dataObject->bucket->objects();
         foreach ($objectsToClear as $object) {
             $object->delete();
         }
+
+        if (file_exists($this->downloadDestination)) {
+            unlink($this->downloadDestination);
+        }
     }
 
     public function testDoesExistExistingBucketBucketExists()
     {
+        // given
+        // The bucket is always available
+
+        // when
+
+        // then
         $this->assertTrue($this->dataObject->doesExist($this->bucketUri));
     }
 
     public function testDoesExistExistingObjectObjectExists()
     {
-        $this->clearBucket();
-        $objectUri = $this->bucketUri . '/sample.jpeg';
-        $localFile = 'images/sample.jpeg';
+        // given
+        // The bucket is always available
+        $this->dataObject->upload($this->localFile, $this->objectUri);
 
-        $this->dataObject->upload($localFile, $objectUri);
+        // when
 
-        $this->assertTrue($this->dataObject->doesExist($localFile));
+        // then
+        $this->assertTrue($this->dataObject->doesExist($this->localFile));
     }
 
     public function testDoesExistMissingObjectObjectNotExists()
     {
-        $objectUri = $this->bucketUri . '/sample.jpeg';
+        // given
+        // The bucket is always available
+        // The bucket is empty (or does not contain the expected object)
 
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
+        // when
+
+        // then
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
     }
 
     public function testUploadBucketAndLocalFileAreAvailableNewObjectCreatedOnBucket()
     {
-        $this->clearBucket();
-        $objectUri = $this->bucketUri . '/sample.jpeg';
-        $localFile = 'images/sample.jpeg';
-
+        // given
         $this->assertTrue($this->dataObject->doesExist($this->bucketUri));
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
 
-        $this->dataObject->upload($localFile, $objectUri);
+        // when
+        $this->dataObject->upload($this->localFile, $this->objectUri);
 
-        $this->assertTrue($this->dataObject->doesExist($objectUri));
+        // then
+        $this->assertTrue($this->dataObject->doesExist($this->objectUri));
     }
 
     public function testDownloadObjectAndLocalPathAvailableObjectDownloaded()
     {
-        $objectUri = $this->bucketUri . '/sample.jpeg';
-        $localFile = 'images/testDownload.jpeg';
+        // given
+        $this->assertTrue($this->dataObject->doesExist($this->objectUri));
+        $this->assertFalse(file_exists($this->downloadDestination));
 
-        $this->assertTrue($this->dataObject->doesExist($objectUri));
-        $this->assertFalse(file_exists($localFile));
+        // when
+        $this->dataObject->download($this->objectUri, $this->downloadDestination);
 
-        $this->dataObject->download($objectUri, $localFile);
-
-        $this->assertTrue(file_exists($localFile));
+        // then
+        $this->assertTrue(file_exists($this->downloadDestination));
     }
 
     public function testDownloadObjectMissingThrowException()
     {
-        $objectUri = $this->bucketUri . '/missingObject.jpeg';
-        $localFile = 'images/testDownload.jpeg';
+        // given
+        $this->objectUri = $this->bucketUri . '/missingObject.jpeg';
 
-        if (file_exists($localFile)) {
-            unlink($localFile);
-        }
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
+        $this->assertFalse(file_exists($this->downloadDestination));
 
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
-        $this->assertFalse(file_exists($localFile));
+        // when
+        $this->expectException(ObjectNotFoundException::class);
+        $this->dataObject->download($this->objectUri, $this->downloadDestination);
 
-        $this->expectException(Exception::class);
-        $this->dataObject->download($objectUri, $localFile);
+        // then
+        // The exception is thrown
     }
 
     public function testPublishObjectExistsPublicUrlCreated()
     {
-        $objectUri = $this->bucketUri . '/sample.jpeg';
-        $localFile = 'images/testPublish.jpeg';
+        // given
+        $this->localFile = 'images/testPublish.jpeg';
         $destinationFolder = 'images/';
 
-        $this->assertTrue($this->dataObject->doesExist($objectUri));
+        $this->assertTrue($this->dataObject->doesExist($this->objectUri));
         $this->assertTrue(file_exists($destinationFolder));
 
-        $presignedUrl = $this->dataObject->publish($objectUri);
-        file_put_contents($localFile, file_get_contents($presignedUrl));
+        // when
+        $presignedUrl = $this->dataObject->publish($this->objectUri);
+        file_put_contents($this->localFile, file_get_contents($presignedUrl));
 
-        $this->assertTrue($this->dataObject->doesExist($localFile));
+        // then
+        $this->assertTrue($this->dataObject->doesExist($this->localFile));
     }
 
     public function testPublishObjectMissingThrowException()
     {
-        $objectUri = $this->bucketUri . '/missingObject.jpeg';
+        // given
+        $this->objectUri = $this->bucketUri . '/missingObject.jpeg';
 
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
 
-        $this->expectException(Exception::class);
-        $this->dataObject->publish($objectUri);
+        // when
+        $this->expectException(ObjectNotFoundException::class);
+        $this->dataObject->publish($this->objectUri);
+
+        // then
+        // The exception is thrown
     }
 
     public function testRemoveObjectPresentNoFolderObjectRemoved()
     {
-        $objectUri = $this->bucketUri . '/objectToRemove.jpeg';
-        $localFile = 'images/objectToRemove.jpeg';
+        // given
+        $this->objectUri = $this->bucketUri . '/objectToRemove.jpeg';
+        $this->localFile = 'images/objectToRemove.jpeg';
 
-        $this->dataObject->upload($localFile, $objectUri);
-        $this->assertTrue($this->dataObject->doesExist($objectUri));
+        $this->dataObject->upload($this->localFile, $this->objectUri);
+        $this->assertTrue($this->dataObject->doesExist($this->objectUri));
 
-        $this->dataObject->remove($objectUri);
+        // when
+        $this->dataObject->remove($this->objectUri);
 
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
+        // then
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
     }
 
     public function testRemoveObjectAndFolderPresentObjectRemoved()
     {
-        $this->clearBucket();
-        $objectUri = $this->bucketUri . '/images';
+        // given
+        // The bucket contains object at the root level as well as in subfolders
+        // Sample: mybucket.com/myobject     //myObject is a folder
+        //        mybucket.com/myobject/myObjectInSubfolder
+        $this->objectUri = $this->bucketUri . '/images';
         $objectUriWithSubFolder = $this->bucketUri . '/images/objectToRemove.jpeg';
-        $localFile = 'images/objectToRemove.jpeg';
+        $this->localFile = 'images/objectToRemove.jpeg';
 
-        $this->dataObject->upload($localFile, $objectUriWithSubFolder);
-        $this->assertTrue($this->dataObject->doesExist($objectUri));
+        $this->dataObject->upload($this->localFile, $objectUriWithSubFolder);
+        $this->assertTrue($this->dataObject->doesExist($this->objectUri));
         $this->assertTrue($this->dataObject->doesExist($objectUriWithSubFolder));
 
-        $this->dataObject->remove($objectUri, true);
+        // when
+        $this->dataObject->remove($this->objectUri, true);
 
-        $this->assertFalse($this->dataObject->doesExist($objectUri));
+        // then
+        $this->assertFalse($this->dataObject->doesExist($this->objectUri));
     }
 }

@@ -7,23 +7,39 @@ use App\LabelDetectorImpl;
 
 class LabelDetectorTest extends TestCase
 {
+    private static $labelDetectorInstance;
     private $labelDetector;
     private $localFile;
     private $remoteFileUrl;
+    private $maxLabels;
+    private $minConfidenceLevel;
+
+    public static function setUpBeforeClass(): void
+    {
+        $env = parse_ini_file('.env');
+        $credentialsPath = $env['LABELDETECTOR_CREDENTIALS_PATH'];
+        self::$labelDetectorInstance = new LabelDetectorImpl($credentialsPath);
+    }
 
     protected function setUp(): void
     {
-        $this->labelDetector = new LabelDetectorImpl();
+        $this->labelDetector = self::$labelDetectorInstance;
+
         $this->localFile = 'images/sample.jpeg';
         $this->remoteFileUrl = 'https://www.admin.ch/gov/de/start/departemente/departement-fuer-auswaertige-angelegenheiten-eda/_jcr_content/par/image/image.imagespooler.jpg/1611330706364/Cassis.jpg';
+        $this->maxLabels = 5;
+        $this->minConfidenceLevel = 60;
     }
 
     public function testAnalyzeLocalFileWithDefaultValuesImageAnalyzed()
     {
+        // given
         $this->assertTrue(file_exists($this->localFile));
 
+        // when
         $response = $this->labelDetector->analyze($this->localFile);
 
+        // then
         $this->assertTrue($response->amountOfLabels <= 10);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= 90);
@@ -32,8 +48,12 @@ class LabelDetectorTest extends TestCase
 
     public function testAnalyzeRemoteImageWithDefaultValuesImageAnalyzed()
     {
+        // given
+
+        // when
         $response = $this->labelDetector->analyze($this->remoteFileUrl);
 
+        // then
         $this->assertTrue($response->amountOfLabels <= 10);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= 90);
@@ -42,11 +62,13 @@ class LabelDetectorTest extends TestCase
 
     public function testAnalyzeRemoteImageWithCustomMaxLabelValueImageAnalyzed()
     {
-        $maxLabels = 5;
+        // given
 
-        $response = $this->labelDetector->analyze($this->remoteFileUrl, $maxLabels);
+        // when
+        $response = $this->labelDetector->analyze($this->remoteFileUrl, $this->maxLabels);
 
-        $this->assertTrue($response->amountOfLabels <= $maxLabels);
+        // then
+        $this->assertTrue($response->amountOfLabels <= $this->maxLabels);
         foreach ($response->metrics as $metric) {
             $this->assertTrue($metric->confidenceLevel >= 50);
         }
@@ -54,26 +76,29 @@ class LabelDetectorTest extends TestCase
 
     public function testAnalyzeRemoteImageWithCustomMinConfidenceLevelValueImageAnalyzed()
     {
-        $minConfidenceLevel = 60;
+        // given
 
-        $response = $this->labelDetector->analyze($this->remoteFileUrl, $minConfidenceLevel);
+        // when
+        $response = $this->labelDetector->analyze($this->remoteFileUrl, $this->minConfidenceLevel);
 
+        // then
         $this->assertTrue($response->amountOfLabels <= 10);
         foreach ($response->metrics as $metric) {
-            $this->assertTrue($metric->confidenceLevel >= $minConfidenceLevel);
+            $this->assertTrue($metric->confidenceLevel >= $this->minConfidenceLevel);
         }
     }
 
     public function testAnalyzeRemoteImageWithCustomValuesImageAnalyzed()
     {
-        $maxLabels = 5;
-        $minConfidenceLevel = 60;
+        // given
 
-        $response = $this->labelDetector->analyze($this->remoteFileUrl, $maxLabels, $minConfidenceLevel);
+        // when
+        $response = $this->labelDetector->analyze($this->remoteFileUrl, $this->maxLabels, $this->minConfidenceLevel);
 
-        $this->assertTrue($response->amountOfLabels <= $maxLabels);
+        // then
+        $this->assertTrue($response->amountOfLabels <= $this->maxLabels);
         foreach ($response->metrics as $metric) {
-            $this->assertTrue($metric->confidenceLevel >= $minConfidenceLevel);
+            $this->assertTrue($metric->confidenceLevel >= $this->minConfidenceLevel);
         }
     }
 }
