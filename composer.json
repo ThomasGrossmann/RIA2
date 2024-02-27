@@ -1,7 +1,9 @@
 {
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "backend/",
+            "App\\DataObject\\": "backend/dataObject/src",
+            "App\\LabelDetector\\": "backend/labelDetector/src"
         }
     },
     "require": {

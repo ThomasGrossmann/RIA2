@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\DataObject;
 
 use App\Exceptions\ObjectAlreadyExistsException;
 use App\Exceptions\ObjectNotFoundException;

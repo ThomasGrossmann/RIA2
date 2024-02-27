@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use App\LabelDetectorImpl;
+use App\LabelDetector\LabelDetectorImpl;
 
 class LabelDetectorTest extends TestCase
 {
@@ -16,7 +16,7 @@ class LabelDetectorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $env = parse_ini_file('.env.labelDetector');
+        $env = parse_ini_file(__DIR__ . '/../.env');
         $credentialsPath = $env['CREDENTIALS_PATH'];
         self::$labelDetectorInstance = new LabelDetectorImpl($credentialsPath);
     }
