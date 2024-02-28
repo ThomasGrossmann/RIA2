@@ -46,7 +46,7 @@ const DropzoneComponent = () => {
   const fileList = files.map((file) => (
     <li key={file.name}>
       <img style={ImagePreview} src={file.preview} alt={file.name} />
-      <span>{file.name}</span>
+      <span data-testid="cypress-img-preview">{file.name}</span>
     </li>
   ));
 
