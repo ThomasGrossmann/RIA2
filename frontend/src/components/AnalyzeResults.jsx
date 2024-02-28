@@ -5,9 +5,22 @@ const AnalyzeResults = () => {
   const { t } = useTranslation();
 
   return (
-    <div >
-
-    </div>
+    <>
+      <table className='w-full border border-slate-400'>
+        <thead className='bg-slate-400'>
+          <tr>
+            <th className='p-2'>Labels</th>
+            <th className='p-2'>Confidence</th>
+          </tr>
+        </thead>
+        <tbody className='text-center'>
+          <tr>
+            <td className='p-2'>Label 1</td>
+            <td className='p-2'>90</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 }
 

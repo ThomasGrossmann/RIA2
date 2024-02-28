@@ -11,21 +11,16 @@ const dropzoneStyle = {
   padding: "20px",
   borderWidth: "2px",
   borderRadius: "8px",
-  borderColor: "#eeeeee",
+  borderColor: "white",
   borderStyle: "dashed",
   color: "#aaaaaa",
-  outline: "none",
-  transition: "border 0.24s ease-in-out",
   cursor: "pointer",
   paddingTop: "20px",
 };
 
 const ImagePreview = {
-  display: "flex",
-  maxWidth: "100%",
-  maxHeight: "100%",
   margin: "auto",
-  borderRadius: "10px",
+  borderRadius: "6px",
 };
 
 const DropzoneComponent = () => {
@@ -56,9 +51,9 @@ const DropzoneComponent = () => {
   ));
 
   return (
-    <div id="dragdrop" style={dropzoneStyle}
+    <div style={dropzoneStyle}
       {...getRootProps()}>
-      <input {...getInputProps()} />
+      <input data-testid="dragdrop" className="block" {...getInputProps()} />
       <p>{t("dragdrop_here")}</p>
       <ul>{fileList}</ul>
     </div>
