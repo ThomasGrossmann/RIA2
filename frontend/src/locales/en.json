@@ -1,0 +1,8 @@
+{
+    "max_labels": "Max number of labels",
+    "max_labels_placeholder": "Default value : 10",
+    "min_confidence": "Minimum confidence",
+    "min_confidence_placeholder": "Default value : 90",
+    "dragdrop_here": "Drag and drop your file here, or click to select",
+    "analyze_button": "Analyze"
+}

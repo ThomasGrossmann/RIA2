@@ -1,0 +1,8 @@
+{
+    "max_labels": "Maximale Anzahl an Labels",
+    "max_labels_placeholder": "Standardwert: 10",
+    "min_confidence": "Minimale Konfidenz",
+    "min_confidence_placeholder": "Standardwert: 90",
+    "dragdrop_here": "Ziehen Sie Ihr Datei hierher, oder klicken Sie, um Datei auszuwählen.",
+    "analyze_button": "Analysieren"
+}
