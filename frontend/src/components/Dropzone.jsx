@@ -4,23 +4,28 @@ import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 
 const dropzoneStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
   justifyContent: "center",
-  padding: "20px",
+  display: "flex",
+  padding: "40px",
   borderWidth: "2px",
   borderRadius: "8px",
   borderColor: "white",
   borderStyle: "dashed",
   color: "#aaaaaa",
   cursor: "pointer",
-  paddingTop: "20px",
 };
 
-const ImagePreview = {
-  margin: "auto",
-  borderRadius: "6px",
+const activeDropzoneStyle = {
+  justifyContent: "center",
+  display: "flex",
+  padding: "40px",
+  borderWidth: "2px",
+  borderRadius: "8px",
+  borderColor: "lightgreen",
+  borderStyle: "dashed",
+  color: "#aaaaaa",
+  cursor: "pointer",
+  backgroundColor: "#e2e8f0",
 };
 
 const DropzoneComponent = () => {
@@ -35,9 +40,11 @@ const DropzoneComponent = () => {
     );
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: "image/*",
+    accept: {
+      "image/*": [".jpg", ".jpeg", ".png"],
+    },
     maxFiles: 1
   });
 
@@ -45,16 +52,20 @@ const DropzoneComponent = () => {
 
   const fileList = files.map((file) => (
     <li key={file.name}>
-      <img style={ImagePreview} src={file.preview} alt={file.name} />
+      <img className="object-contain w-40 h-40 mx-auto" src={file.preview} alt={file.name} />
       <span data-testid="cypress-img-preview">{file.name}</span>
     </li>
   ));
 
   return (
-    <div style={dropzoneStyle}
+    <div style={isDragActive ? activeDropzoneStyle : dropzoneStyle}
       {...getRootProps()}>
-      <input data-testid="dragdrop" className="block" {...getInputProps()} />
-      <p>{t("dragdrop_here")}</p>
+      <input data-testid="dragdrop" {...getInputProps()} />
+      {
+        isDragActive ?
+          <p>{t('drop_file')}</p> :
+          <p>{t('dragdrop_here')}</p>
+      }
       <ul>{fileList}</ul>
     </div>
   );

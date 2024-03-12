@@ -10,7 +10,7 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <select value={i18n.language} onChange={handleLanguageChange} data-testid="cypress-lang-switch" className="bg-transparent p-2 border border-cyan-300">
+    <select value={i18n.language} onChange={handleLanguageChange} data-testid="cypress-lang-switch" className="bg-transparent p-2">
       <option value="en">ANG</option>
       <option value="fr">FRA</option>
       <option value="de">ALL</option>
