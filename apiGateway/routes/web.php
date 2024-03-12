@@ -18,8 +18,3 @@ use Illuminate\Support\Facades\Http;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/analyze', function (Request $request) {
-    Http::get('http://localhost:5000/analyze'); // TODO : Change the port to whatever will be the port of the labelDetector
-    return response()->json(['message' => 'Analyze request sent to localhost:5000']);
-});
