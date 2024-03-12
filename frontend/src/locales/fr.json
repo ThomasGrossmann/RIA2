@@ -4,5 +4,10 @@
     "min_confidence": "Confiance minimum",
     "min_confidence_placeholder": "Valeur par défaut : 90",
     "dragdrop_here": "Déposez votre fichier ici ou cliquez pour sélectionner",
-    "analyze_button": "Analyser"
+    "drop_file": "Relachez pour déposer le fichier",
+    "analyze_button": "Analyser",
+    "analyze_results": "Résultats de l'analyse",
+    "labels": "Labels",
+    "no_labels": "Aucun label trouvé",
+    "confidence": "Confiance"
 }

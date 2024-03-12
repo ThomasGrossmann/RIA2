@@ -4,5 +4,10 @@
     "min_confidence": "Minimale Konfidenz",
     "min_confidence_placeholder": "Standardwert: 90",
     "dragdrop_here": "Ziehen Sie Ihr Datei hierher, oder klicken Sie, um Datei auszuwählen.",
-    "analyze_button": "Analysieren"
+    "drop_file": "Datei hier ablegen",
+    "analyze_button": "Analysieren",
+    "analyze_results": "Ergebnisse der Analyse",
+    "labels": "Labels",
+    "no_labels": "Keine Labels gefunden",
+    "confidence": "Konfidenz"
 }
