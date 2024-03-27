@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use App\DataObject\GoogleDataObjectImpl;
+use App\Services\GoogleDataObjectImpl;
 use App\Exceptions\ObjectNotFoundException;
 
 class DataObjectTest extends TestCase
