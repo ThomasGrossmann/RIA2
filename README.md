@@ -1,4 +1,4 @@
-# BI1 - README
+# RIA2 - README
 
 ## Description
 This project is designed to use the image analysis API from providers such as Google (Vision), Amazon (Rekognition) or Azure (AI Vision).
