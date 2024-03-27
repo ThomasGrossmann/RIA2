@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApiGatewayController;
+use App\Http\Controllers\DataObjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/analyze', [ApiGatewayController::class, 'analyze']);
+Route::post('doesExist', [DataObjectController::class, 'doesExist']);
+Route::post('upload', [DataObjectController::class, 'upload']);
+Route::post('publish', [DataObjectController::class, 'publish']);
