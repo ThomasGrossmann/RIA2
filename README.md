@@ -21,65 +21,111 @@ Tools with versions that were used to realize this project. Versions may be subj
 #### Env
 Some data must remain private such as the API crendentials JSON file or bucket URI.
 
-In order to do so, copy and rename the `.env.example` file.
-- `cp .env.example .env`
-- Open the file and fill the variables with your data
-
-#### Database Model
-In order to verify/test the conversion of the analyzed data to a SQL script :
-- Open and run `create_model.sql` in your prefered SQL client to create the Database
-- Run the sequence `php index.php` to analyze and generate
-- Run the generated SQL file in your prefered SQL client
+In order to do so, copy and rename the `.env.example` file to `.env` and fill the corresponding values, for each service.
+- API Gateway
+  - `cd apiGateway`
+  - `cp .env.example .env`
+  - The API Gateway does not have any real private data so you do not need to fill anything
+- Data Object
+  - `cd dataObject`
+  - `cp .env.example .env`
+  - Fill the `CREDENTIALS_PATH`, `BUCKET_NAME` and `BUCKET_URI` variables with the corresponding values from your prefered Cloud Storage Provider.
+- Label Detector
+  - `cd labelDetector`
+  - `cp .env.example .env`
+  - Fill the `CREDENTIALS_PATH` variable with the corresponding value from you prefered Image Rekognition Provider.
 
 ## Deployment
 
-### Dependencies
-Composer dependencies used to realize and test the project.
-- **Dev**
-  - google/apiclient : ^2.15
-  - google/cloud-vision : ^1.7
-  - google/cloud-storage : ^1.36
-- **Tests**
-  - phpunit/phpunit : ^10.5
-
 ### To install the project
 - Clone the repo locally
-  - ```
-    git clone https://github.com/ThomasGrossmann/BI1/
-    cd BI1
-    ```
-- Install Composer dependencies
-  - `composer install`
+  - `git clone https://github.com/ThomasGrossmann/RIA2`
+  - `cd RIA2`
+- Install Composer dependencies and launch each service
+  - API Gateway
+    - `cd apiGateway`
+    - `composer install`
+    - `php artisan serve --port=5000`
+  - Label Detector
+    - `cd labelDetector`
+    - `composer install`
+    - `php artisan serve --port=5001`
+  - Data Object
+    - `cd dataObject`
+    - `composer install`
+    - `php artisan serve --port=5002`
+```
+Note that the ports used are up to you but in the project's state, these are the port that are use for development
+```
+- Please refer to the [Frontend README](https://github.com/CPNV-ES-RIA2/THOMAS/blob/main/README.md) to know how to really use the app with its graphical interface.
+
 ### To run the tests
-- DataObject Tests
-  - `./vendor/bin/phpunit tests/DataObjectTests.php`
-- LabelDetector Tests
-  - `./vendor/bin/phpunit tests/LabelDetectorTests.php`  
+TODO
+
 ## Directory structure
+The services are all Laravel projects. To reduce boilerplate and repetition, I only mentionned the important folders and files that were either modified or created by myself.
 ```
 ├── LICENSE
 ├── README.md
+├── apiGateway
+│   ├── README.md
+│   ├── app
+│   │   ├── Http
+│   │   │   ├── Controllers
+│   │   │   │   ├── ApiGatewayController.php
+│   ├── composer.json
+│   ├── composer.lock
+│   ├── package.json
+│   ├── routes
+│   │   ├── api.php
+│   ├── tests
+│   │   └── Unit
+│   │       └── ExampleTest.php
 ├── composer.json
 ├── composer.lock
 ├── create_model.sql
+├── dataObject
+│   ├── README.md
+│   ├── app
+│   │   ├── Http
+│   │   │   ├── Controllers
+│   │   │   │   └── DataObjectController.php
+│   │   └── Services
+│   │       ├── GoogleDataObjectImpl.php
+│   │       └── IDataObject.php
+│   ├── composer.json
+│   ├── composer.lock
+│   ├── package.json
+│   ├── routes
+│   │   ├── api.php
+│   ├── tests
+│   │   └── Unit
+│   │       ├── DataObjectTest.php
 ├── docs
+│   ├── RIA2-Frontend_Conception.png
 │   ├── RIA2.drawio
 │   └── RIA2.png
 ├── images
 │   ├── objectToRemove.jpeg
 │   └── sample.jpeg
 ├── index.php
-├── src
-│   ├── GoogleDataObjectImpl.php
-│   ├── IDataObject.php
-│   ├── ILabelDetector.php
-│   ├── LabelDetectorImpl.php
-│   └── exceptions
-│       ├── ObjectAlreadyExistsException.php
-│       └── ObjectNotFoundException.php
-└── tests
-    ├── DataObjectTest.php
-    └── LabelDetectorTest.php
+└── labelDetector
+    ├── README.md
+    ├── app
+    │   ├── Http
+    │   │   ├── Controllers
+    │   │   │   └── LabelDetectorController.php
+    │   └── Services
+    │       ├── ILabelDetector.php
+    │       └── LabelDetectorImpl.php
+    ├── composer.json
+    ├── composer.lock
+    ├── package.json
+    ├── routes
+    │   ├── api.php
+    ├── tests
+    │   └── Unit
+    │       └── ExampleTest.php
 ```
 
 ## License
